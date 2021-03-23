@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div id="addTaskPanel">
+        <div class="panel-title">
+            <p>Create Task</p>
+        </div>
+        <form method="post" name="createTask">
+            <table>
+            <tr>
+                <td>Task Name:</td>
+                <td><input required type="text" name="taskName"></td>
+            </tr>
+            <tr>
+                <td>Owner:</td>
+                <td><input type="text" name="owner"></td>
+            </tr>
+            <tr>
+                <td>Start Time:</td>
+                <td>
+                    <div class="input-group date form_datetime col-md-5" data-link-field="time_input1">
+                    <input class="form-control" size="80" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+				    <input type="hidden" id="time_input1" name="startTime"value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>End Time:</td>
+                <td>
+                    <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - HH:ii p" data-link-field="time_input2">
+                    <input class="form-control" size="80" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+				    <input type="hidden" id="time_input2" name="endTime"value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Man-hour:</td>
+                <td><input type="text" name="man_hour"></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><textarea name="description" style="height:100px;width:200px" rows="5" warp="virtual"></textarea></td>
+{#                <td><input type="text" name="description" style="height:100px;width:200px"></td>#}
+            </tr>
+            <tr>
+                <td>Sprint:</td>
+                <td>
+                    <select class="selectpicker" name="sprint_select">
+                    {% for sprint in sprints %}
+                       <option value="{{ sprint.id }}">{{ sprint.name }}</option>
+                    {% endfor %}
+            </select>
+                </td>
+            </tr>
+
+            </table>
+            <br>
+            <input type="submit" value="create" class="btn btn-info"><br>
+        </form>
+
+        <br><a href="{{ url_for('kanban.index') }}"><button>Cancel</button></a>
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                {% if message %}
+                <div class="alert alert-warning" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+</div>
+
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{url_for('static', filename='dist_3rd/js/bootstrap-datetimepicker.js')}}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dist_3rd/css/bootstrap-datetimepicker.css') }}"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dist_3rd/css/bootstrap.css') }}"/>
+    <script>
+        $(document).ready(function(){
+
+        $('.form_datetime').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            autoclose: true,
+            weekStart: 1,
+            todayBtn:  1,
+		    todayHighlight: 1,
+		    startView: 2,
+		    forceParse: 0,
+            showMeridian: 1
+        })
+
+        });
+    </script>
+{% endblock %}

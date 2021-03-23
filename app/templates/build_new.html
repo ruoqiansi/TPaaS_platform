@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+    <div class="row">
+    <form class="form-horizontal center-block" role="form">
+        <div class='col-xs-3'>
+            <select class="selectpicker" data-live-search="true">
+                {% for branch in build_branch %}
+                    <option>{{ branch.branch_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class='col-xs-3'>
+            <select class="selectpicker" data-live-search="true">
+                {% for platform in build_platform %}
+                    <option>{{ platform | join('-') }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-xs-2">
+           <button type="button" class="btn btn-default">Build</button>
+       </div>
+    </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    分页显示学生信息
+{% endblock %}
+
+{% block content %}
+    <h2>SprintList</h2>
+    {% for sprint in sprints %}
+        id：{{ sprint.id }}<br>
+        name：{{ sprint.name }}<br>
+        <br>
+    {% endfor %}
+
+    当前页数：{{ paginate.page }}
+    总页数：{{ paginate.pages }}
+    一共有{{ paginate.total }}条数据
+    <br>
+
+    {% if paginate.has_prev %}
+        <a href="/sprintList/?page={{ paginate.prev_num }}">上一页</a>
+    {% endif %}
+    页码：
+    {% for i in paginate.iter_pages() %}
+        <a href="/sprintList/?page={{ i }}">{{ i }}</a>
+    {% endfor %}
+
+    {% if paginate.has_next %}
+        <a href="/sprintList/?page={{ paginate.next_num }}">下一页</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "bootstrap/base.html" %}
+
+{%- block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static', filename='dist_3rd/css/bootstrap-select.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='dist_3rd/css/bootstrap-datepicker3.standalone.min.css')}}">
+{%- endblock styles %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}

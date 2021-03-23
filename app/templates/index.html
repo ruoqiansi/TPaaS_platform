@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<h1>Welcome</h1>
+    <h1>Kanban</h1>
+    <div id="draggable" class="ui-widget-content">
+        <p><a href="{{ url_for('kanban.create_sprint') }}"><button>Add Sprint</button></a></p>
+    </div>
+
+    <div class="row" style="margin-left: 10px">
+    {% for sprint in sprints %}
+        <div style="background: #bce8f1;margin-left: 10px; border-style: outset" class="col-xs-2" onclick="showTaskTable({{ sprint.id }})" id="sprint{{ sprint.id }}">
+            <p>{{ sprint.name }}</p>
+            <p><a href="{{ url_for('kanban.edit_sprint',id=sprint.id) }}">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a></p>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% if paginate.has_prev %}
+        <a href="/?page={{ paginate.prev_num }}">
+            <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </button>
+        </a>
+    {% else %}
+        <button type="button" class="btn btn-default btn-sm" disabled="disabled">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+    {% endif %}
+
+    {% if paginate.has_next %}
+        <a href="/?page={{ paginate.next_num }}">
+            <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
+        </a>
+    {% else %}
+        <button type="button" class="btn btn-default btn-sm" disabled="disabled">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+    {% endif %}
+
+    <table border="2" cellspacing="10" cellpadding="5" width="500" height="100" id="taskTable" class="table table-striped table-hover">
+    <caption>Total Task List</caption>
+    <tr>
+        <th width="100" colspan="4" style="text-align: center">Task List
+            <a href="{{ url_for('kanban.create_task') }}">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </th>
+    </tr>
+    <tr>
+        <th colspan="4" style="text-align: center">Task Status</th>
+    </tr>
+    <tr align="center">
+        <td>Not Start</td>
+        <td>Start</td>
+        <td>Doing</td>
+        <td>Done</td>
+    </tr>
+    {% for task in tasks %}
+        {% if task.status == '0' %}
+        <tr align="center">
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% elif task.status == '1' %}
+        <tr align="center">
+            <td></td>
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% elif task.status == '2'  %}
+        <tr align="center">
+            <td></td>
+            <td></td>
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+            <td></td>
+        </tr>
+        {% elif task.status == '3'  %}
+        <tr align="center">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </table>
+
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+    function showTaskTable(sprintId){
+        data = {'sprintId':sprintId}
+        console.log(sprintId);
+        $.ajax({
+            url:'/taskTable/'+sprintId,
+            type:'POST',
+            data:JSON.stringify(data),
+            datatype:'html',
+            success : function (data){
+                console.log(data);
+                $("#taskTable").html(data);
+            }
+        })
+    }
+
+    </script>
+{% endblock %}

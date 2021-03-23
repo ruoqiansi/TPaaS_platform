@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div id="editTaskPanel">
+        <div class="panel-title">
+            <p>Edit Task</p>
+        </div>
+        <form method="post" name="editTask">
+            <table>
+            <tr>
+                <td>Task Name:</td>
+                <td><input required type="text" name="taskName" placeholder="{{ task.name }}" value="{{ task.name }}"></td>
+            </tr>
+            <tr>
+                <td>Owner:</td>
+                <td><input type="text" name="owner" placeholder="{{ task.owner }}" value="{{ task.owner }}"></td>
+            </tr>
+            <tr>
+                <td>Start Time:</td>
+                <td>
+                    <div class="input-group date form_datetime col-md-5" data-link-field="time_input1">
+                    <input class="form-control" size="80" type="text" value="" readonly placeholder="{{ task.start_time }}" value="{{ task.start_time }}">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+				    <input type="hidden" id="time_input1" name="startTime" value="{{ task.start_time }}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>End Time:</td>
+                <td>
+                    <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - HH:ii p" data-link-field="time_input2">
+                    <input class="form-control" size="80" type="text" value="" readonly placeholder="{{ task.end_time }}" value="{{ task.end_time }}">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+				    <input type="hidden" id="time_input2" name="endTime"value="{{ task.end_time }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Man-hour:</td>
+                <td><input type="text" name="man_hour" placeholder="{{ task.man_hour }}" value="{{ task.man_hour }}"></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><textarea name="description" style="height:100px;width:200px" rows="5" warp="virtual">{{ task.description }}</textarea></td>
+{#                <td><input type="text" name="description" style="height:100px;width:200px"></td>#}
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td>
+                    <select name="status" id="taskStatus">
+                        <option value="0">Not Start</option>
+                        <option value="1">Start</option>
+                        <option value="2">Doing</option>
+                        <option value="3">Done</option>
+                        <option value="4">Close</option>
+                    </select>
+                </td>
+            </tr>
+
+            </table>
+            <br>
+            <input type="submit" value="update" class="btn btn-info"><br>
+        </form>
+
+        <br><a href="{{ url_for('kanban.index') }}"><button>Cancel</button></a>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{url_for('static', filename='dist_3rd/js/bootstrap-datetimepicker.js')}}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dist_3rd/css/bootstrap-datetimepicker.css') }}"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dist_3rd/css/bootstrap.css') }}"/>
+    <script>
+        $(document).ready(function(){
+
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            autoclose: true,
+            weekStart: 1,
+            todayBtn:  1,
+		    todayHighlight: 1,
+		    startView: 2,
+		    forceParse: 0,
+            showMeridian: 1
+        })
+        $("#taskStatus option[value="+"{{ task.status }}"+"]").attr('selected','selected');
+        });
+    </script>
+{% endblock %}

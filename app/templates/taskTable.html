@@ -1,0 +1,68 @@
+{% block page_content %}
+    <table border="2" cellspacing="10" cellpadding="5" width="500" height="100" id="taskTable">
+
+    <caption>{{ sprint.name }}</caption>
+
+    <tr>
+        <th width="100" colspan="4" style="text-align: center">Task List
+
+            <a href="{{ url_for('kanban.create_task') }}">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </th>
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align: center">Task Status</td>
+    </tr>
+    <tr align="center">
+        <td>Not Start</td>
+        <td>Start</td>
+        <td>Doing</td>
+        <td>Done</td>
+    </tr>
+    {% for task in tasks %}
+        {% if task.status == '0' %}
+        <tr align="center">
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% elif task.status == '1' %}
+        <tr align="center">
+            <td></td>
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% elif task.status == '2'  %}
+        <tr align="center">
+            <td></td>
+            <td></td>
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+            <td></td>
+        </tr>
+        {% elif task.status == '3'  %}
+        <tr align="center">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <a href="{{ url_for('kanban.edit_task',id=task.id) }}">{{ task.name }}</a><br>
+                {{ task.owner }}
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </table>
+
+{% endblock %}

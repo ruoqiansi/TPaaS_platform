@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div id="editSprintPanel">
+        <div class="panel-title">
+            <p>Edit Sprint</p>
+        </div>
+        <form method="post" name="editSprint">
+            <table>
+            <tr>
+                <td>Sprint Name:</td>
+                <td><input required type="text" name="sprintName" placeholder="{{ sprint.name }}" value="{{ sprint.name }}"></td>
+            </tr>
+            <tr>
+                <td>Start Time:</td>
+                <td>
+                    <div class="input-group date form_datetime col-md-5" data-link-field="time_input1">
+                    <input class="form-control" size="80" type="text" value="" readonly placeholder="{{ sprint.start_time }}" value="{{ sprint.start_time }}">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+				    <input type="hidden" id="time_input1" name="startTime" value="{{ sprint.start_time }}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>End Time:</td>
+                <td>
+                    <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - HH:ii p" data-link-field="time_input2">
+                    <input class="form-control" size="80" type="text" value="" readonly placeholder="{{ sprint.end_time }}" value="{{ sprint.end_time }}">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+				    <input type="hidden" id="time_input2" name="endTime"value="{{ sprint.end_time }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><textarea name="description" style="height:100px;width:200px" rows="5" warp="virtual">{{ sprint.description }}</textarea></td>
+{#                <td><input type="text" name="description" style="height:100px;width:200px"></td>#}
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td>
+                    <select name="status" id="sprintStatus">
+                        <option value="0">Not Start</option>
+                        <option value="1">Going</option>
+                        <option value="2">Finish</option>
+                        <option value="3">Close</option>
+                    </select>
+                </td>
+            </tr>
+
+            </table>
+            <br>
+            <input type="submit" value="update" class="btn btn-info"><br>
+        </form>
+
+        <br><a href="{{ url_for('kanban.index') }}"><button>Cancel</button></a>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{url_for('static', filename='dist_3rd/js/bootstrap-datetimepicker.js')}}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dist_3rd/css/bootstrap-datetimepicker.css') }}"/>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dist_3rd/css/bootstrap.css') }}"/>
+    <script>
+        $(document).ready(function(){
+
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            autoclose: true,
+            weekStart: 1,
+            todayBtn:  1,
+		    todayHighlight: 1,
+		    startView: 2,
+		    forceParse: 0,
+            showMeridian: 1
+        })
+        $("#sprintStatus option[value="+"{{ sprint.status }}"+"]").attr('selected','selected');
+        });
+    </script>
+{% endblock %}

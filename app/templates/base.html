@@ -1,0 +1,58 @@
+{% extends "bootstrap/base.html"  %}
+{% block title %}Welcome TPaaS{% endblock %}
+{%- block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static', filename='dist_3rd/css/bootstrap-select.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='dist_3rd/css/bootstrap-datepicker3.standalone.min.css')}}">
+{%- endblock styles %}
+{% block navbar %}
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('kanban.index') }}">Welcome TPaaS</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Release Management <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('build.build_new') }}">New Build</a></li>
+                            <li><a href="{{ url_for('build.build_index') }}">List Build</a></li>
+                        </ul>
+                    </li>
+                    <li class="active" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Environment Management<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if current_user.is_administrator() %}
+                            <li><a href="#">Edit Profile</a></li>
+                            <li class="divider"></li>
+                            {% endif %}
+                            <li><a href="#">Deployment</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Test Cases</a></li>
+                </ul>
+            </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('auth.user',username=current_user.username)}}"><span class="glyphicon glyphicon-user"></span> {{ current_user.username }}</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{url_for('static', filename='dist_3rd/js/bootstrap-select.min.js')}}"></script>
+    <script src="{{url_for('static', filename='dist_3rd/js/bootstrap-datepicker.min.js')}}"></script>
+{%- endblock scripts %}
